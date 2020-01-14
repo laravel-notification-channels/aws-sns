@@ -31,7 +31,7 @@ class SnsMessage
         if (is_array($content)) {
             foreach ($content as $property => $value) {
                 if (method_exists($this, $property)) {
-                    $this->$property($value);
+                    $this->{$property}($value);
                 }
             }
         }
@@ -40,7 +40,6 @@ class SnsMessage
     /**
      * Creates a new instance of the message.
      *
-     * @param  array      $data
      * @return SnsMessage
      */
     public static function create(array $data = [])
@@ -51,7 +50,6 @@ class SnsMessage
     /**
      * Sets the message body.
      *
-     * @param  string $content
      * @return $this
      */
     public function body(string $content)
@@ -84,7 +82,6 @@ class SnsMessage
     /**
      * Sets the SMS delivery type as promotional.
      *
-     * @param  bool  $active
      * @return $this
      */
     public function promotional(bool $active = true)
@@ -97,12 +94,11 @@ class SnsMessage
     /**
      * Sets the SMS delivery type as transactional.
      *
-     * @param  bool  $active
      * @return $this
      */
     public function transactional(bool $active = true)
     {
-        $this->promotional = !$active;
+        $this->promotional = ! $active;
 
         return $this;
     }
