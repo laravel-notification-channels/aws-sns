@@ -5,14 +5,16 @@ namespace NotificationChannels\AwsSns\Test;
 use Aws\Sns\SnsClient as SnsService;
 use Illuminate\Contracts\Events\Dispatcher;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsMessage;
+use PHPUnit\Framework\TestCase;
 
-class SnsTest extends MockeryTestCase
+class SnsTest extends TestCase
 {
+    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     /**
-     * @var SnsService|Mockery\LegacyMockInterface|Mockery\MockInterface
+     * @var Mockery\LegacyMockInterface|Mockery\MockInterface|SnsService
      */
     protected $snsService;
 
@@ -26,7 +28,7 @@ class SnsTest extends MockeryTestCase
      */
     protected $sns;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

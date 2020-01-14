@@ -6,13 +6,15 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Notification;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsMessage;
+use PHPUnit\Framework\TestCase;
 
-class SnsChannelTest extends MockeryTestCase
+class SnsChannelTest extends TestCase
 {
+    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     /**
      * @var Mockery\LegacyMockInterface|Mockery\MockInterface|Sns
      */

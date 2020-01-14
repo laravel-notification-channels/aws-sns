@@ -5,15 +5,17 @@ namespace NotificationChannels\AwsSns\Test;
 use Aws\Sns\SnsClient as SnsService;
 use Illuminate\Contracts\Foundation\Application;
 use Mockery;
-use Mockery\Adapter\Phpunit\MockeryTestCase;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsServiceProvider;
+use PHPUnit\Framework\TestCase;
 
-class SnsServiceProviderTest extends MockeryTestCase
+class SnsServiceProviderTest extends TestCase
 {
+    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
     /**
-     * @var Mockery\LegacyMockInterface|Mockery\MockInterface|App
+     * @var App|Mockery\LegacyMockInterface|Mockery\MockInterface
      */
     protected $app;
 

@@ -2,11 +2,14 @@
 
 namespace NotificationChannels\AwsSns\Test;
 
-use NotificationChannels\AwsSns\SnsMessage;
 use PHPUnit\Framework\TestCase;
+use NotificationChannels\AwsSns\SnsMessage;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 class SnsMessageTest extends TestCase
 {
+    use MockeryPHPUnitIntegration;
+
     /** @test */
     public function it_can_accept_a_plain_string_when_constructing_a_message()
     {
