@@ -102,7 +102,7 @@ class SnsMessage
      */
     public function transactional(bool $active = true)
     {
-        $this->promotional = ! $active;
+        $this->promotional = !$active;
 
         return $this;
     }

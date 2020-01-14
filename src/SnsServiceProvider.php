@@ -14,11 +14,11 @@ class SnsServiceProvider extends ServiceProvider
     {
         $this->app->when(SnsChannel::class)
             ->needs(Sns::class)
-            ->give(function () {
+            ->give(function() {
                 return new Sns($this->app->make(SnsService::class));
             });
 
-        $this->app->bind(SnsService::class, function () {
+        $this->app->bind(SnsService::class, function() {
             return new SnsService($this->app['config']['services.sns']);
         });
     }

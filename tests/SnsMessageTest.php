@@ -2,9 +2,9 @@
 
 namespace NotificationChannels\AwsSns\Test;
 
-use PHPUnit\Framework\TestCase;
-use NotificationChannels\AwsSns\SnsMessage;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use NotificationChannels\AwsSns\SnsMessage;
+use PHPUnit\Framework\TestCase;
 
 class SnsMessageTest extends TestCase
 {
