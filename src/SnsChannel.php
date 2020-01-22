@@ -35,7 +35,7 @@ class SnsChannel
     public function send($notifiable, Notification $notification)
     {
         try {
-            $destination = $this->getDestination($notifiable);
+            $destination = $this->getDestination($notifiable, $notification);
             $message = $this->getMessage($notifiable, $notification);
 
             return $this->sns->send($message, $destination);
@@ -53,13 +53,14 @@ class SnsChannel
     /**
      * Get the phone number to send a notification to.
      *
-     * @param $notifiable
+     * @param  mixed                                  $notifiable
+     * @param  \Illuminate\Notifications\Notification $notification
      * @return mixed
      * @throws CouldNotSendNotification
      */
-    protected function getDestination($notifiable)
+    protected function getDestination($notifiable, Notification $notification)
     {
-        if ($to = $notifiable->routeNotificationFor('sns')) {
+        if ($to = $notifiable->routeNotificationFor('sns', $notification)) {
             return $to;
         }
 
@@ -69,7 +70,7 @@ class SnsChannel
     /**
      * Try to get the phone number from some commonly used attributes for that.
      *
-     * @param $notifiable
+     * @param  mixed $notifiable
      * @return mixed
      * @throws CouldNotSendNotification
      */
