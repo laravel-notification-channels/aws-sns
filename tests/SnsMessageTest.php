@@ -62,13 +62,29 @@ class SnsMessageTest extends TestCase
     }
 
     /** @test */
+    public function the_default_sms_sender_id_is_notice()
+    {
+        $message = SnsMessage::create();
+        $this->assertEquals('NOTICE', $message->getSenderID());
+    }
+
+    /** @test */
+    public function the_sms_sender_id_can_be_changed_using_a_proper_method()
+    {
+        $message = SnsMessage::create()->sender('Test');
+        $this->assertEquals('Test', $message->getSenderID());
+    }
+
+    /** @test */
     public function it_can_accept_all_the_contents_when_constructing_a_message()
     {
         $message = SnsMessage::create([
             'body' => 'My mass body',
             'transactional' => true,
+            'sender' => 'Test',
         ]);
         $this->assertEquals('My mass body', $message->getBody());
         $this->assertEquals('Transactional', $message->getDeliveryType());
+        $this->assertEquals('Test', $message->getSenderID());
     }
 }

@@ -41,7 +41,7 @@ class SnsTest extends TestCase
     /** @test */
     public function it_can_send_a_promotional_sms_message_to_sns()
     {
-        $message = new SnsMessage('Message text');
+        $message = new SnsMessage(['body' => 'Message text', 'sender' => 'Test']);
 
         $this->snsService->shouldReceive('publish')
             ->atLeast()->once()
@@ -49,6 +49,10 @@ class SnsTest extends TestCase
                 'Message' => 'Message text',
                 'PhoneNumber' => '+1111111111',
                 'MessageAttributes' => [
+                    'AWS.SNS.SMS.SenderID' => [
+                        'DataType' => 'String',
+                        'StringValue' => 'Test',
+                    ],
                     'AWS.SNS.SMS.SMSType' => [
                         'DataType' => 'String',
                         'StringValue' => 'Promotional',
@@ -63,7 +67,7 @@ class SnsTest extends TestCase
     /** @test */
     public function it_can_send_a_transactional_sms_message_to_sns()
     {
-        $message = new SnsMessage(['body' => 'Message text', 'transactional' => true]);
+        $message = new SnsMessage(['body' => 'Message text', 'sender' => 'Test', 'transactional' => true]);
 
         $this->snsService->shouldReceive('publish')
             ->atLeast()->once()
@@ -71,6 +75,10 @@ class SnsTest extends TestCase
                 'Message' => 'Message text',
                 'PhoneNumber' => '+22222222222',
                 'MessageAttributes' => [
+                    'AWS.SNS.SMS.SenderID' => [
+                        'DataType' => 'String',
+                        'StringValue' => 'Test',
+                    ],
                     'AWS.SNS.SMS.SMSType' => [
                         'DataType' => 'String',
                         'StringValue' => 'Transactional',
