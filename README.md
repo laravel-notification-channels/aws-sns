@@ -80,20 +80,22 @@ class AccountApproved extends Notification
 
         return SnsMessage::create()
             ->body("Your {$notifiable->service} account was approved!")
-            ->transactional();
+            ->transactional()
+            ->sender("MyStore");
     
         // or
 
         return SnsMessage::create([
             'body' => "Your {$notifiable->service} account was approved!",
-            'transactional' => true
+            'transactional' => true,
+            'sender' => "MyStore"
         ]);
 
         // or
 
         return SnsMessage::create([
             'body' => "Your {$notifiable->service} account was approved!"
-        ])->promotional();
+        ])->promotional()->sender("MyStore");
     }
 }
 ```
@@ -116,6 +118,7 @@ public function routeNotificationForSns()
 - `body('')`: Accepts a string value for the notification body. Messages with more than 140 characters will be split into multiple messages by SNS without breaking any words.
 - `promotional(bool)`: Sets the SMS attribute as the promotional delivery type (default). Optimizes the delivery for lower costs.
 - `transactional(bool)`: Sets the SMS attribute as the transactional delivery type. Optimizes the delivery to achieve the highest reliability (it also costs more). 
+- `sender(string)`: Sets the SMS sender id. It can be up to 11 characters with no spaces. 
 
 More information about the SMS Attributes can be found on the [AWS SNS Docs](https://docs.aws.amazon.com/pt_br/sdk-for-php/v3/developer-guide/sns-examples-sending-sms.html#get-sms-attributes).
 It's important to know that the attributes set on the message will override the
