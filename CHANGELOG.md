@@ -2,6 +2,9 @@
 
 All notable changes to `aws-sns` will be documented in this file
 
+## [1.1.0] - 2020-03-06
+- Added support for Laravel 7.
+
 ## [1.0.1] - 2020-01-22
 
 ### Changed
