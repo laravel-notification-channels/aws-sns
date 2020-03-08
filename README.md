@@ -8,7 +8,7 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/laravel-notification-channels/aws-sns/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/laravel-notification-channels/aws-sns/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/laravel-notification-channels/aws-sns.svg?style=flat-square)](https://packagist.org/packages/laravel-notification-channels/aws-sns)
 
-This package makes it easy to send notifications using [AWS SNS](https://aws.amazon.com/pt/sns/) with Laravel 5.5+ and 6.0.
+This package makes it easy to send notifications using [AWS SNS](https://aws.amazon.com/pt/sns/) with Laravel framework.
 Since Laravel already ships with SES email support, this package focuses on sending only SMS notifications for now.
 More advanced features like support for topics could be added in the future.
 
