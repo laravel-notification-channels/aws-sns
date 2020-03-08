@@ -40,16 +40,20 @@ composer require laravel-notification-channels/aws-sns
 Add your AWS key ID, secret and default region to your `config/services.php`:
 
 ```php
-// config/services.php
+<?php
 
-// ...
-'sns' => [
-    'key' => env('AWS_ACCESS_KEY_ID'),
-    'secret' => env('AWS_SECRET_ACCESS_KEY'),
-    'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-    'version' => 'latest',
-],
-// ...
+return [
+
+    // ...
+
+    'sns' => [
+        'key' => env('AWS_ACCESS_KEY_ID'),
+        'secret' => env('AWS_SECRET_ACCESS_KEY'),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+        'version' => 'latest',
+    ],
+
+];
 ```
 
 ## Usage
@@ -57,6 +61,8 @@ Add your AWS key ID, secret and default region to your `config/services.php`:
 Now you can use the channel in your `via()` method inside the notification:
 
 ```php
+<?php
+
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsMessage;
 use Illuminate\Notifications\Notification;
@@ -70,32 +76,24 @@ class AccountApproved extends Notification
 
     public function toSns($notifiable)
     {
+        // You can just return a plain string:
         return "Your {$notifiable->service} account was approved!";
         
-        // or 
-
+        // OR explicitly return a SnsMessage object passing the message body:
         return new SnsMessage("Your {$notifiable->service} account was approved!");
         
-        // or
-
-        return SnsMessage::create()
-            ->body("Your {$notifiable->service} account was approved!")
-            ->transactional()
-            ->sender("MyStore");
-    
-        // or
-
+        // OR return a SnsMessage passing the arguments via `create()` or `__construct()`:
         return SnsMessage::create([
             'body' => "Your {$notifiable->service} account was approved!",
             'transactional' => true,
-            'sender' => "MyStore"
+            'sender' => 'MyBusiness',
         ]);
 
-        // or
-
-        return SnsMessage::create([
-            'body' => "Your {$notifiable->service} account was approved!"
-        ])->promotional()->sender("MyStore");
+        // OR create the object with or without arguments and then use the fluent API:
+        return SnsMessage::create()
+            ->body("Your {$notifiable->service} account was approved!")
+            ->promotional()
+            ->sender('MyBusiness');
     }
 }
 ```
@@ -106,19 +104,27 @@ Notifiable model. If you want to override this behaviour, add the
 `routeNotificationForSns` method to your Notifiable model.
 
 ```php
-public function routeNotificationForSns()
-{
-    return '+1234567890';
+<?php
+
+use Illuminate\Notifications\Notifiable;
+
+class SomeModel {
+    use Notifiable;
+
+    public function routeNotificationForSns($notification)
+    {
+        return '+1234567890';
+    }
 }
 ```
 
 ### Available SnsMessage methods
 
-- `create([])`: Accepts an array of key-values where the keys corresponds to the methods below and the values are passed as parameters.
-- `body('')`: Accepts a string value for the notification body. Messages with more than 140 characters will be split into multiple messages by SNS without breaking any words.
-- `promotional(bool)`: Sets the SMS attribute as the promotional delivery type (default). Optimizes the delivery for lower costs.
-- `transactional(bool)`: Sets the SMS attribute as the transactional delivery type. Optimizes the delivery to achieve the highest reliability (it also costs more). 
-- `sender(string)`: Sets the SMS sender id. It can be up to 11 characters with no spaces. 
+- `create([])`: Accepts an array of key-values where the keys corresponds to the methods below and the values are passed as parameters;
+- `body('')`: Accepts a string value for the notification body. Messages with more than 140 characters will be split into multiple messages by SNS without breaking any words;
+- `promotional(bool)`: Sets the delivery type as promotional (default). Optimizes the delivery for lower costs;
+- `transactional(bool)`: Sets the delivery type as transactional. Optimizes the delivery to achieve the highest reliability (it also costs more); 
+- `sender(string)`: Up to 11 characters with no spaces, that is displayed as the sender on the receiving device. [Support varies by country](https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions-countries.html). 
 
 More information about the SMS Attributes can be found on the [AWS SNS Docs](https://docs.aws.amazon.com/pt_br/sdk-for-php/v3/developer-guide/sns-examples-sending-sms.html#get-sms-attributes).
 It's important to know that the attributes set on the message will override the
