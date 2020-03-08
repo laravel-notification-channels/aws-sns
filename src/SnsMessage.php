@@ -9,25 +9,25 @@ class SnsMessage
     const TRANSACTIONAL_SMS_TYPE = 'Transactional';
 
     /**
-     * The default delivery type for the SMS message.
+     * The body of the message.
+     *
+     * @var string
+     */
+    protected $body = '';
+
+    /**
+     * The delivery type of the message.
      *
      * @var bool
      */
     protected $promotional = true;
 
     /**
-     * The default Sender ID for the SMS message.
+     * The sender identification of the message.
      *
      * @var string
      */
-    protected $senderID = 'NOTICE';
-
-    /**
-     * The body of the message.
-     *
-     * @var string
-     */
-    protected $body = '';
+    protected $sender = '';
 
     public function __construct($content)
     {
@@ -79,27 +79,7 @@ class SnsMessage
     }
 
     /**
-     * Get the SMS delivery type.
-     *
-     * @return string
-     */
-    public function getDeliveryType()
-    {
-        return $this->promotional ? self::PROMOTIONAL_SMS_TYPE : self::TRANSACTIONAL_SMS_TYPE;
-    }
-
-    /**
-     * Get the SMS Sender ID.
-     *
-     * @return string
-     */
-    public function getSenderID()
-    {
-        return $this->senderID;
-    }
-
-    /**
-     * Sets the SMS delivery type as promotional.
+     * Sets the message delivery type as promotional.
      *
      * @param bool $active
      * @return $this
@@ -112,7 +92,7 @@ class SnsMessage
     }
 
     /**
-     * Sets the SMS delivery type as transactional.
+     * Sets the message delivery type as transactional.
      *
      * @param bool $active
      * @return $this
@@ -125,15 +105,35 @@ class SnsMessage
     }
 
     /**
-     * Sets the SMS Sender ID.
+     * Get the message delivery type.
+     *
+     * @return string
+     */
+    public function getDeliveryType()
+    {
+        return $this->promotional ? self::PROMOTIONAL_SMS_TYPE : self::TRANSACTIONAL_SMS_TYPE;
+    }
+
+    /**
+     * Sets the message sender identification.
      *
      * @param string $sender
      * @return $this
      */
-    public function sender(string $sender = 'NOTICE')
+    public function sender(string $sender)
     {
-        $this->senderID = $sender;
+        $this->sender = $sender;
 
         return $this;
+    }
+
+    /**
+     * Get the message sender identification.
+     *
+     * @return string
+     */
+    public function getSender()
+    {
+        return $this->sender;
     }
 }

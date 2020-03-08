@@ -41,7 +41,7 @@ class SnsTest extends TestCase
     /** @test */
     public function it_can_send_a_promotional_sms_message_to_sns()
     {
-        $message = new SnsMessage(['body' => 'Message text', 'sender' => 'Test']);
+        $message = new SnsMessage('Message text');
 
         $this->snsService->shouldReceive('publish')
             ->atLeast()->once()
@@ -49,10 +49,6 @@ class SnsTest extends TestCase
                 'Message' => 'Message text',
                 'PhoneNumber' => '+1111111111',
                 'MessageAttributes' => [
-                    'AWS.SNS.SMS.SenderID' => [
-                        'DataType' => 'String',
-                        'StringValue' => 'Test',
-                    ],
                     'AWS.SNS.SMS.SMSType' => [
                         'DataType' => 'String',
                         'StringValue' => 'Promotional',
@@ -67,7 +63,7 @@ class SnsTest extends TestCase
     /** @test */
     public function it_can_send_a_transactional_sms_message_to_sns()
     {
-        $message = new SnsMessage(['body' => 'Message text', 'sender' => 'Test', 'transactional' => true]);
+        $message = new SnsMessage(['body' => 'Message text', 'transactional' => true]);
 
         $this->snsService->shouldReceive('publish')
             ->atLeast()->once()
@@ -75,10 +71,6 @@ class SnsTest extends TestCase
                 'Message' => 'Message text',
                 'PhoneNumber' => '+22222222222',
                 'MessageAttributes' => [
-                    'AWS.SNS.SMS.SenderID' => [
-                        'DataType' => 'String',
-                        'StringValue' => 'Test',
-                    ],
                     'AWS.SNS.SMS.SMSType' => [
                         'DataType' => 'String',
                         'StringValue' => 'Transactional',
@@ -88,5 +80,31 @@ class SnsTest extends TestCase
             ->andReturn(true);
 
         $this->sns->send($message, '+22222222222');
+    }
+
+    /** @test */
+    public function it_can_send_a_sms_message_with_sender_id()
+    {
+        $message = new SnsMessage(['body' => 'Message text', 'sender' => 'CompanyInc']);
+
+        $this->snsService->shouldReceive('publish')
+            ->atLeast()->once()
+            ->with([
+                'Message' => 'Message text',
+                'PhoneNumber' => '+33333333333',
+                'MessageAttributes' => [
+                    'AWS.SNS.SMS.SMSType' => [
+                        'DataType' => 'String',
+                        'StringValue' => 'Promotional',
+                    ],
+                    'AWS.SNS.SMS.SenderID' => [
+                        'DataType' => 'String',
+                        'StringValue' => 'CompanyInc',
+                    ],
+                ],
+            ])
+            ->andReturn(true);
+
+        $this->sns->send($message, '+33333333333');
     }
 }

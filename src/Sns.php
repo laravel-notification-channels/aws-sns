@@ -25,19 +25,26 @@ class Sns
      */
     public function send(SnsMessage $message, $destination)
     {
+        $attributes = [
+            'AWS.SNS.SMS.SMSType' => [
+                'DataType' => 'String',
+                'StringValue' => $message->getDeliveryType(),
+            ],
+        ];
+
+        if (! empty($message->getSender())) {
+            $attributes +=  [
+                'AWS.SNS.SMS.SenderID' => [
+                    'DataType' => 'String',
+                    'StringValue' => $message->getSender(),
+                ],
+            ];
+        }
+
         $parameters = [
             'Message' => $message->getBody(),
             'PhoneNumber' => $destination,
-            'MessageAttributes' => [
-                'AWS.SNS.SMS.SenderID' => [
-                    'DataType' => 'String',
-                    'StringValue' => $message->getSenderID(),
-                ],
-                'AWS.SNS.SMS.SMSType' => [
-                    'DataType' => 'String',
-                    'StringValue' => $message->getDeliveryType(),
-                ],
-            ],
+            'MessageAttributes' => $attributes,
         ];
 
         return $this->snsService->publish($parameters);

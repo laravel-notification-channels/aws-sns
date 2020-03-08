@@ -62,17 +62,17 @@ class SnsMessageTest extends TestCase
     }
 
     /** @test */
-    public function the_default_sms_sender_id_is_notice()
+    public function the_default_sms_sender_id_is_empty()
     {
         $message = SnsMessage::create();
-        $this->assertEquals('NOTICE', $message->getSenderID());
+        $this->assertEmpty($message->getSender());
     }
 
     /** @test */
     public function the_sms_sender_id_can_be_changed_using_a_proper_method()
     {
         $message = SnsMessage::create()->sender('Test');
-        $this->assertEquals('Test', $message->getSenderID());
+        $this->assertEquals('Test', $message->getSender());
     }
 
     /** @test */
@@ -85,6 +85,6 @@ class SnsMessageTest extends TestCase
         ]);
         $this->assertEquals('My mass body', $message->getBody());
         $this->assertEquals('Transactional', $message->getDeliveryType());
-        $this->assertEquals('Test', $message->getSenderID());
+        $this->assertEquals('Test', $message->getSender());
     }
 }
