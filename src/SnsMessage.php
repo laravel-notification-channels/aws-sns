@@ -16,6 +16,13 @@ class SnsMessage
     protected $promotional = true;
 
     /**
+     * The default Sender ID for the SMS message.
+     *
+     * @var string
+     */
+    protected $senderID = 'NOTICE';
+
+    /**
      * The body of the message.
      *
      * @var string
@@ -40,6 +47,7 @@ class SnsMessage
     /**
      * Creates a new instance of the message.
      *
+     * @param array $data
      * @return SnsMessage
      */
     public static function create(array $data = [])
@@ -50,6 +58,7 @@ class SnsMessage
     /**
      * Sets the message body.
      *
+     * @param string $content
      * @return $this
      */
     public function body(string $content)
@@ -80,8 +89,19 @@ class SnsMessage
     }
 
     /**
+     * Get the SMS Sender ID.
+     *
+     * @return string
+     */
+    public function getSenderID()
+    {
+        return $this->senderID;
+    }
+
+    /**
      * Sets the SMS delivery type as promotional.
      *
+     * @param bool $active
      * @return $this
      */
     public function promotional(bool $active = true)
@@ -94,11 +114,25 @@ class SnsMessage
     /**
      * Sets the SMS delivery type as transactional.
      *
+     * @param bool $active
      * @return $this
      */
     public function transactional(bool $active = true)
     {
         $this->promotional = ! $active;
+
+        return $this;
+    }
+
+    /**
+     * Sets the SMS Sender ID.
+     *
+     * @param string $sender
+     * @return $this
+     */
+    public function sender(string $sender = 'NOTICE')
+    {
+        $this->senderID = $sender;
 
         return $this;
     }

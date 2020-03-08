@@ -29,6 +29,10 @@ class Sns
             'Message' => $message->getBody(),
             'PhoneNumber' => $destination,
             'MessageAttributes' => [
+                'AWS.SNS.SMS.SenderID' => [
+                    'DataType' => 'String',
+                    'StringValue' => $message->getSenderID(),
+                ],
                 'AWS.SNS.SMS.SMSType' => [
                     'DataType' => 'String',
                     'StringValue' => $message->getDeliveryType(),
