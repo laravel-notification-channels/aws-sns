@@ -9,18 +9,25 @@ class SnsMessage
     const TRANSACTIONAL_SMS_TYPE = 'Transactional';
 
     /**
-     * The default delivery type for the SMS message.
+     * The body of the message.
+     *
+     * @var string
+     */
+    protected $body = '';
+
+    /**
+     * The delivery type of the message.
      *
      * @var bool
      */
     protected $promotional = true;
 
     /**
-     * The body of the message.
+     * The sender identification of the message.
      *
      * @var string
      */
-    protected $body = '';
+    protected $sender = '';
 
     public function __construct($content)
     {
@@ -40,6 +47,7 @@ class SnsMessage
     /**
      * Creates a new instance of the message.
      *
+     * @param array $data
      * @return SnsMessage
      */
     public static function create(array $data = [])
@@ -50,6 +58,7 @@ class SnsMessage
     /**
      * Sets the message body.
      *
+     * @param string $content
      * @return $this
      */
     public function body(string $content)
@@ -70,18 +79,9 @@ class SnsMessage
     }
 
     /**
-     * Get the SMS delivery type.
+     * Sets the message delivery type as promotional.
      *
-     * @return string
-     */
-    public function getDeliveryType()
-    {
-        return $this->promotional ? self::PROMOTIONAL_SMS_TYPE : self::TRANSACTIONAL_SMS_TYPE;
-    }
-
-    /**
-     * Sets the SMS delivery type as promotional.
-     *
+     * @param bool $active
      * @return $this
      */
     public function promotional(bool $active = true)
@@ -92,8 +92,9 @@ class SnsMessage
     }
 
     /**
-     * Sets the SMS delivery type as transactional.
+     * Sets the message delivery type as transactional.
      *
+     * @param bool $active
      * @return $this
      */
     public function transactional(bool $active = true)
@@ -101,5 +102,38 @@ class SnsMessage
         $this->promotional = ! $active;
 
         return $this;
+    }
+
+    /**
+     * Get the message delivery type.
+     *
+     * @return string
+     */
+    public function getDeliveryType()
+    {
+        return $this->promotional ? self::PROMOTIONAL_SMS_TYPE : self::TRANSACTIONAL_SMS_TYPE;
+    }
+
+    /**
+     * Sets the message sender identification.
+     *
+     * @param string $sender
+     * @return $this
+     */
+    public function sender(string $sender)
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    /**
+     * Get the message sender identification.
+     *
+     * @return string
+     */
+    public function getSender()
+    {
+        return $this->sender;
     }
 }

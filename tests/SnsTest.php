@@ -81,4 +81,30 @@ class SnsTest extends TestCase
 
         $this->sns->send($message, '+22222222222');
     }
+
+    /** @test */
+    public function it_can_send_a_sms_message_with_sender_id()
+    {
+        $message = new SnsMessage(['body' => 'Message text', 'sender' => 'CompanyInc']);
+
+        $this->snsService->shouldReceive('publish')
+            ->atLeast()->once()
+            ->with([
+                'Message' => 'Message text',
+                'PhoneNumber' => '+33333333333',
+                'MessageAttributes' => [
+                    'AWS.SNS.SMS.SMSType' => [
+                        'DataType' => 'String',
+                        'StringValue' => 'Promotional',
+                    ],
+                    'AWS.SNS.SMS.SenderID' => [
+                        'DataType' => 'String',
+                        'StringValue' => 'CompanyInc',
+                    ],
+                ],
+            ])
+            ->andReturn(true);
+
+        $this->sns->send($message, '+33333333333');
+    }
 }
