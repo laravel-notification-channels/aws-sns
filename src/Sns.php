@@ -18,10 +18,11 @@ class Sns
     }
 
     /**
-     * @param SnsMessage $message
-     * @param $destination
-     * @return \Aws\Result
+     * @param string $destination Phone number as described by the E.164 format.
+     *
      * @throws AwsException
+     *
+     * @return \Aws\Result
      */
     public function send(SnsMessage $message, $destination)
     {
@@ -33,7 +34,7 @@ class Sns
         ];
 
         if (! empty($message->getSender())) {
-            $attributes +=  [
+            $attributes += [
                 'AWS.SNS.SMS.SenderID' => [
                     'DataType' => 'String',
                     'StringValue' => $message->getSender(),

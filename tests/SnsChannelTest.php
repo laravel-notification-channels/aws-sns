@@ -30,7 +30,7 @@ class SnsChannelTest extends TestCase
      */
     protected $channel;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -119,7 +119,7 @@ class SnsChannelTest extends TestCase
 
 class Notifiable
 {
-    public $phone_number = null;
+    public $phone_number;
 
     public function routeNotificationFor()
     {

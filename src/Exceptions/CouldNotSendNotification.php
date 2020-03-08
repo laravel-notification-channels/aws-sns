@@ -6,9 +6,6 @@ use NotificationChannels\AwsSns\SnsMessage;
 
 class CouldNotSendNotification extends \Exception
 {
-    /**
-     * @return static
-     */
     public static function invalidReceiver()
     {
         return new static(
@@ -17,11 +14,6 @@ class CouldNotSendNotification extends \Exception
         );
     }
 
-    /**
-     * @param mixed $message
-     *
-     * @return static
-     */
     public static function invalidMessageObject($message)
     {
         $type = is_object($message) ? get_class($message) : gettype($message);

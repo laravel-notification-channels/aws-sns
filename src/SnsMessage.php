@@ -47,7 +47,6 @@ class SnsMessage
     /**
      * Creates a new instance of the message.
      *
-     * @param array $data
      * @return SnsMessage
      */
     public static function create(array $data = [])
@@ -58,7 +57,6 @@ class SnsMessage
     /**
      * Sets the message body.
      *
-     * @param string $content
      * @return $this
      */
     public function body(string $content)
@@ -81,7 +79,6 @@ class SnsMessage
     /**
      * Sets the message delivery type as promotional.
      *
-     * @param bool $active
      * @return $this
      */
     public function promotional(bool $active = true)
@@ -94,7 +91,6 @@ class SnsMessage
     /**
      * Sets the message delivery type as transactional.
      *
-     * @param bool $active
      * @return $this
      */
     public function transactional(bool $active = true)
@@ -117,7 +113,6 @@ class SnsMessage
     /**
      * Sets the message sender identification.
      *
-     * @param string $sender
      * @return $this
      */
     public function sender(string $sender)

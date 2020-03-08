@@ -28,8 +28,6 @@ class SnsChannel
     /**
      * Send the given notification.
      *
-     * @param  mixed                                  $notifiable
-     * @param  \Illuminate\Notifications\Notification $notification
      * @return \Aws\Result
      */
     public function send($notifiable, Notification $notification)
@@ -53,9 +51,6 @@ class SnsChannel
     /**
      * Get the phone number to send a notification to.
      *
-     * @param  mixed                                  $notifiable
-     * @param  \Illuminate\Notifications\Notification $notification
-     * @return mixed
      * @throws CouldNotSendNotification
      */
     protected function getDestination($notifiable, Notification $notification)
@@ -70,16 +65,14 @@ class SnsChannel
     /**
      * Try to get the phone number from some commonly used attributes for that.
      *
-     * @param  mixed $notifiable
-     * @return mixed
      * @throws CouldNotSendNotification
      */
     protected function guessDestination($notifiable)
     {
         $commonAttributes = ['phone', 'phone_number', 'full_phone'];
         foreach ($commonAttributes as $attribute) {
-            if (isset($notifiable->$attribute)) {
-                return $notifiable->$attribute;
+            if (isset($notifiable->{$attribute})) {
+                return $notifiable->{$attribute};
             }
         }
 
@@ -89,9 +82,6 @@ class SnsChannel
     /**
      * Get the SNS Message object.
      *
-     * @param $notifiable
-     * @param  Notification             $notification
-     * @return SnsMessage
      * @throws CouldNotSendNotification
      */
     protected function getMessage($notifiable, Notification $notification): SnsMessage
