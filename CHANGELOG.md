@@ -2,6 +2,10 @@
 
 All notable changes to `aws-sns` will be documented in this file
 
+## [1.2.0] - 2020-09-08
+### Added
+- Added support for Laravel 8 (PR#11).
+
 ## [1.1.1] - 2020-03-08
 ### Added
 - You can now specify the Sender ID for the message using the `sender` method (PR#4).
