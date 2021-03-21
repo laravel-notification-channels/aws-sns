@@ -3,7 +3,6 @@
 namespace NotificationChannels\AwsSns\Test;
 
 use Aws\Sns\SnsClient;
-use Aws\Credentials\Credentials;
 use Aws\Sns\SnsClient as SnsService;
 use Illuminate\Contracts\Foundation\Application;
 use Mockery;
