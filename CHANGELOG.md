@@ -2,6 +2,10 @@
 
 All notable changes to `aws-sns` will be documented in this file
 
+## [1.2.1] - 2021-03-21
+### Fixed
+- Hard-coded credentials were not being passed correctly.
+
 ## [1.2.0] - 2020-09-08
 ### Added
 - Added support for Laravel 8 (PR#11).
