@@ -3,6 +3,7 @@
 namespace NotificationChannels\AwsSns;
 
 use Aws\Sns\SnsClient as SnsService;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
 class SnsServiceProvider extends ServiceProvider
@@ -19,7 +20,18 @@ class SnsServiceProvider extends ServiceProvider
             });
 
         $this->app->bind(SnsService::class, function () {
-            return new SnsService($this->app['config']['services.sns']);
+            $config = array_merge(['version' => 'latest'], $this->app['config']['services.sns']);
+
+            return new SnsService($this->addSnsCredentials($config));
         });
+    }
+
+    protected function addSnsCredentials($config): array
+    {
+        if (! empty($config['key']) && ! empty($config['secret'])) {
+            $config['credentials'] = Arr::only($config, ['key', 'secret', 'token']);
+        }
+
+        return $config;
     }
 }

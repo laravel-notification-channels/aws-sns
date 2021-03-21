@@ -2,6 +2,8 @@
 
 namespace NotificationChannels\AwsSns\Test;
 
+use Aws\Sns\SnsClient;
+use Aws\Credentials\Credentials;
 use Aws\Sns\SnsClient as SnsService;
 use Illuminate\Contracts\Foundation\Application;
 use Mockery;
@@ -74,6 +76,61 @@ class SnsServiceProviderTest extends TestCase
             }))
             ->once()
             ->andReturn($this->app);
+
+        $this->provider->boot();
+    }
+
+    /** @test */
+    public function it_creates_the_aws_credentials_from_the_key_and_secret_options()
+    {
+        $this->app->shouldReceive('when')
+            ->with(SnsChannel::class)
+            ->once()
+            ->andReturn($this->app);
+
+        $this->app->shouldReceive('needs')
+            ->with(Sns::class)
+            ->once()
+            ->andReturn($this->app);
+
+        $this->app->shouldReceive('give')
+            ->with(Mockery::on(function ($sns) {
+                return $sns() instanceof Sns;
+            }))
+            ->once();
+
+        $this->app->shouldReceive('make')
+            ->with(SnsService::class)
+            ->andReturn(Mockery::mock(SnsService::class));
+
+        $this->app->shouldReceive('bind')
+            ->with(SnsService::class, Mockery::on(function ($sns) {
+                /** @var SnsClient $snsClient */
+                $snsClient = $sns();
+                $credentials = $snsClient->getCredentials()->wait();
+                $this->assertSame([
+                    'key' => 'aws-key-123',
+                    'secret' => 'aws-secret-ashd1i26312873asw',
+                    'token' => null,
+                    'expires' => null,
+                ], $credentials->toArray());
+
+                return true;
+            }))
+            ->once()
+            ->andReturn($this->app);
+
+        $configArray = [
+            'key' => 'aws-key-123',
+            'secret' => 'aws-secret-ashd1i26312873asw',
+            'region' => 'us-east-1',
+        ];
+
+        $this->app->shouldReceive('offsetGet')
+            ->with('config')
+            ->andReturn([
+                'services.sns' => $configArray,
+            ]);
 
         $this->provider->boot();
     }
