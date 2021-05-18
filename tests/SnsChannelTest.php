@@ -10,6 +10,7 @@ use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsMessage;
 use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class SnsChannelTest extends TestCase
 {
@@ -114,6 +115,22 @@ class SnsChannelTest extends TestCase
             ->with(Mockery::type(NotificationFailed::class));
 
         $this->channel->send($notifiable, $notification);
+    }
+
+    /** @test */
+    public function it_will_send_a_sms_to_an_anonymous_notifiable()
+    {
+        $notification = Mockery::mock(Notification::class);
+        $notification->shouldReceive('toSns')->andReturn('Message text');
+
+        $phoneNumber = '+22222222222';
+        $anonymousNotifiable = NotificationFacade::route(SnsChannel::class, $phoneNumber);
+
+        $this->sns->shouldReceive('send')
+            ->atLeast()->once()
+            ->with(Mockery::type(SnsMessage::class), $phoneNumber);
+
+        $this->channel->send($anonymousNotifiable, $notification);
     }
 }
 
