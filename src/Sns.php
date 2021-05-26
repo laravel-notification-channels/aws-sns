@@ -42,6 +42,15 @@ class Sns
             ];
         }
 
+        if (!empty($message->getOriginationNumber())) {
+            $attributes += [
+                'AWS.MM.SMS.OriginationNumber' => [
+                    'DataType' => 'String',
+                    'StringValue' => $message->getOriginationNumber(),
+                ],
+            ];
+        }
+
         $parameters = [
             'Message' => $message->getBody(),
             'PhoneNumber' => $destination,
