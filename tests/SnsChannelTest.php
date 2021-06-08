@@ -5,12 +5,12 @@ namespace NotificationChannels\AwsSns\Test;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Mockery;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsMessage;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class SnsChannelTest extends TestCase
 {
