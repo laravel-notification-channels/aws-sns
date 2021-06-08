@@ -3,7 +3,6 @@
 namespace NotificationChannels\AwsSns;
 
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\AwsSns\Exceptions\CouldNotSendNotification;
@@ -56,11 +55,7 @@ class SnsChannel
      */
     protected function getDestination($notifiable, Notification $notification)
     {
-        if (
-            $notifiable instanceof AnonymousNotifiable
-            && ($to = $notifiable->routeNotificationFor(self::class))
-            || ($to = $notifiable->routeNotificationFor('sns', $notification))
-        ) {
+        if ($to = $notifiable->routeNotificationFor('sns', $notification)) {
             return $to;
         }
 

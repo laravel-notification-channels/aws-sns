@@ -124,7 +124,7 @@ class SnsChannelTest extends TestCase
         $notification->shouldReceive('toSns')->andReturn('Message text');
 
         $phoneNumber = '+22222222222';
-        $anonymousNotifiable = NotificationFacade::route(SnsChannel::class, $phoneNumber);
+        $anonymousNotifiable = NotificationFacade::route('sns', $phoneNumber);
 
         $this->sns->shouldReceive('send')
             ->atLeast()->once()
