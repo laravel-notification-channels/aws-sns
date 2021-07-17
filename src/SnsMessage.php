@@ -29,6 +29,13 @@ class SnsMessage
      */
     protected $sender = '';
 
+    /**
+     * The origination number of the message.
+     *
+     * @var string
+     */
+    protected $originationNumber = '';
+
     public function __construct($content)
     {
         if (is_string($content)) {
@@ -130,5 +137,27 @@ class SnsMessage
     public function getSender()
     {
         return $this->sender;
+    }
+
+    /**
+     * Sets the message origination number identification.
+     *
+     * @return $this
+     */
+    public function originationNumber(string $originationNumber)
+    {
+        $this->originationNumber = $originationNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get the message origination number identification.
+     *
+     * @return string
+     */
+    public function getOriginationNumber()
+    {
+        return $this->originationNumber;
     }
 }
