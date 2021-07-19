@@ -87,4 +87,19 @@ class SnsMessageTest extends TestCase
         $this->assertEquals('Transactional', $message->getDeliveryType());
         $this->assertEquals('Test', $message->getSender());
     }
+
+    /** @test */
+    public function it_can_send_sms_message_with_origination_number()
+    {
+        $originationNumber = '+13347814073';
+        $message = SnsMessage::create([
+            'body' => 'Message text',
+            'sender' => 'Test',
+            'originationNumber' => $originationNumber,
+        ]);
+
+        $this->assertEquals('Message text', $message->getBody());
+        $this->assertEquals('Test', $message->getSender());
+        $this->assertEquals($originationNumber, $message->getOriginationNumber());
+    }
 }
