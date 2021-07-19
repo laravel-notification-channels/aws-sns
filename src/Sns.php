@@ -42,7 +42,7 @@ class Sns
             ];
         }
 
-        if (!empty($message->getOriginationNumber())) {
+        if (! empty($message->getOriginationNumber())) {
             $attributes += [
                 'AWS.MM.SMS.OriginationNumber' => [
                     'DataType' => 'String',

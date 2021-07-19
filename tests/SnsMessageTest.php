@@ -2,9 +2,9 @@
 
 namespace NotificationChannels\AwsSns\Test;
 
-use PHPUnit\Framework\TestCase;
-use NotificationChannels\AwsSns\SnsMessage;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use NotificationChannels\AwsSns\SnsMessage;
+use PHPUnit\Framework\TestCase;
 
 class SnsMessageTest extends TestCase
 {
@@ -93,7 +93,7 @@ class SnsMessageTest extends TestCase
     {
         $originationNumber = '+13347814073';
         $message = SnsMessage::create([
-            'body' => 'Message text', 
+            'body' => 'Message text',
             'sender' => 'Test',
             'originationNumber' => $originationNumber,
         ]);
