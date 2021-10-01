@@ -18,11 +18,10 @@ class Sns
     }
 
     /**
-     * @param string $destination Phone number as described by the E.164 format.
+     * @param  string  $destination  Phone number as described by the E.164 format.
+     * @return \Aws\Result
      *
      * @throws AwsException
-     *
-     * @return \Aws\Result
      */
     public function send(SnsMessage $message, $destination)
     {
