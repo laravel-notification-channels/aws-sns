@@ -32,7 +32,7 @@ More advanced features like support for topics could be added in the future.
 You can install the package via composer:
 
 ``` bash
-composer require laravel-notification-channels/aws-sns
+composer require laravel-notification-channels/aws-sns --update-with-dependencies
 ```
 
 ### Setting up the AWS SNS service
