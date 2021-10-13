@@ -2,6 +2,11 @@
 
 All notable changes to `aws-sns` will be documented in this file
 
+## [1.3.0] - 2021-10-13
+### Added
+- Added support for Origination Number (PR #15);
+- Installation instructions on the README to solve dependencies conflics (Issue #17).
+
 ## [1.2.1] - 2021-03-21
 ### Fixed
 - Hard-coded credentials were not being passed correctly.
