@@ -123,7 +123,8 @@ class SomeModel {
 - `body('')`: Accepts a string value for the notification body. Messages with more than 140 characters will be split into multiple messages by SNS without breaking any words;
 - `promotional(bool)`: Sets the delivery type as promotional (default). Optimizes the delivery for lower costs;
 - `transactional(bool)`: Sets the delivery type as transactional. Optimizes the delivery to achieve the highest reliability (it also costs more); 
-- `sender(string)`: Up to 11 characters with no spaces, that is displayed as the sender on the receiving device. [Support varies by country](https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions-countries.html). 
+- `sender(string)`: Up to 11 characters with no spaces, that is displayed as the sender on the receiving device. [Support varies by country](https://docs.aws.amazon.com/sns/latest/dg/sns-supported-regions-countries.html);
+- `originationNumber(string)`: A numeric string that identifies an SMS message sender's phone number. Support may not be available in your country, see the [AWS SNS Origination number docs](https://docs.aws.amazon.com/sns/latest/dg/channels-sms-originating-identities-origination-numbers.html).
 
 More information about the SMS Attributes can be found on the [AWS SNS Docs](https://docs.aws.amazon.com/pt_br/sdk-for-php/v3/developer-guide/sns-examples-sending-sms.html#get-sms-attributes).
 It's important to know that the attributes set on the message will override the
