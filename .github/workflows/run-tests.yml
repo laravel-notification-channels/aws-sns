@@ -1,64 +1,68 @@
 name: run-tests
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
-    tests:
-        runs-on: ${{ matrix.os }}
-        strategy:
-            fail-fast: false
-            matrix:
-                os: [ ubuntu-latest ]
-                php: [ 8.1, 8.0, 7.4, 7.3, 7.2 ]
-                laravel: [ 9.*, 8.*, 7.*, 6.*, ~5.5 ]
-                dependency-version: [ prefer-lowest, prefer-stable ]
-                exclude:
-                    # Laravel 9 Supports PHP 8.0 - 8.1
-                    - laravel: 9.*
-                      php: 7.4
-                    - laravel: 9.*
-                      php: 7.3
-                    - laravel: 9.*
-                      php: 7.2
-                    # Laravel 8 Supports PHP 7.3 - 8.1
-                    - laravel: 8.*
-                      php: 7.2
-                    # Laravel 7 Supports PHP 7.2 - 8.0
-                    - laravel: 7.*
-                      php: 8.1
-                    # Laravel 6 Supports PHP 7.2 - 8.0
-                    - laravel: 6.*
-                      php: 8.1
-                    # Laravel 5.5 Supports PHP 7.0 - 7.3
-                    - laravel: ~5.5
-                      php: 8.1
-                    - laravel: ~5.5
-                      php: 8.0
-                    - laravel: ~5.5
-                      php: 7.4
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest ]
+        php: [ 8.1, 8.0, 7.4, 7.3, 7.2 ]
+        laravel: [ 9.*, 8.*, 7.*, 6.*, ~5.5 ]
+        dependency-version: [ prefer-lowest, prefer-stable ]
+        exclude:
+          # Laravel 9 Supports PHP 8.0 - 8.1
+          - laravel: 9.*
+            php: 7.4
+          - laravel: 9.*
+            php: 7.3
+          - laravel: 9.*
+            php: 7.2
+          # Laravel 8 Supports PHP 7.3 - 8.1
+          - laravel: 8.*
+            php: 7.2
+          # Laravel 7 Supports PHP 7.2 - 8.0
+          - laravel: 7.*
+            php: 8.1
+          # Laravel 6 Supports PHP 7.2 - 8.0
+          - laravel: 6.*
+            php: 8.1
+          # Laravel 5.5 Supports PHP 7.0 - 7.3
+          - laravel: ~5.5
+            php: 8.1
+          - laravel: ~5.5
+            php: 8.0
+          - laravel: ~5.5
+            php: 7.4
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
-        steps:
-            -   name: Checkout code
-                uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
-                    coverage: none
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
+          coverage: none
 
-            -   name: Install dependencies
-                run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
-                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
+          composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
 
-            -   name: Setup Problem Matches
-                run: |
-                    echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-                    echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+      - name: Setup Problem Matches
+        run: |
+          echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+          echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            -   name: Execute tests
-                run: vendor/bin/phpunit
+      - name: Execute tests
+        run: vendor/bin/phpunit
