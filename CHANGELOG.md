@@ -2,6 +2,12 @@
 
 All notable changes to `aws-sns` will be documented in this file
 
+## [1.4.0] - 2022-03-02
+### Added
+- Added support for Laravel 9 [#21](https://github.com/laravel-notification-channels/aws-sns/pull/21);
+- Added tests to check the package compatibility with all versions supported [#21](https://github.com/laravel-notification-channels/aws-sns/pull/21);
+- Bumped dependencies to better support newer versions of PHP and Laravel [#21](https://github.com/laravel-notification-channels/aws-sns/pull/21).
+
 ## [1.3.0] - 2021-10-13
 ### Added
 - Added support for Origination Number (PR #15);
