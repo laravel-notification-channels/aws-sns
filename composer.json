@@ -19,7 +19,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
-        "phpunit/phpunit": "^8.0"
+        "phpunit/phpunit": "^8.5.23"
     },
     "autoload": {
         "psr-4": {
