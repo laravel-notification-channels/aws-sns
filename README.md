@@ -130,6 +130,24 @@ More information about the SMS Attributes can be found on the [AWS SNS Docs](htt
 It's important to know that the attributes set on the message will override the
 default ones configured in your AWS account. 
 
+## Exception handling
+Exceptions are not thrown by the package in order to give other channels a chance to work properly. Instead, a `Illuminate\Notifications\Events\NotificationFailed` event is dispatched. For debugging purposes you may listen to this event in the `boot` method of `EventServiceProvider.php`.
+
+```php
+Event::listen(function (\Illuminate\Notifications\Events\NotificationFailed $event) {
+    //Dump and die
+    dd($event);
+    
+    //or log the event
+    Log::error('SNS error', $event->data)
+});
+```
+
+## Laravel Vapor
+By default [Laravel Vapor](https://vapor.laravel.com/) creates a role `laravel-vapor-role` in AWS which does not have permission to send SMS via SNS. This results in SMS being sent successfully in local but will not be sent on a Vapor environment. Note that no exception will be thrown as described above.
+
+In the AWS console, navigate to Identity and Access Management (IAM) and click on roles. Select `laravel-vapor-role` then add the `AmazonSNSFullAccess` policy to enable sending in Vapor.
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
