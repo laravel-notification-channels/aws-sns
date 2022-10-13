@@ -19,6 +19,7 @@ More advanced features like support for topics could be added in the future.
 	- [Setting up the AwsSns service](#setting-up-the-aws-sns-service)
 - [Usage](#usage)
 	- [Available Message methods](#available-message-methods)
+- [Common Problems](#common-problems)
 - [Changelog](#changelog)
 - [Testing](#testing)
 - [Security](#security)
@@ -130,7 +131,9 @@ More information about the SMS Attributes can be found on the [AWS SNS Docs](htt
 It's important to know that the attributes set on the message will override the
 default ones configured in your AWS account. 
 
-## Exception handling
+## Common Problems
+
+### Exception Handling
 Exceptions are not thrown by the package in order to give other channels a chance to work properly. Instead, a `Illuminate\Notifications\Events\NotificationFailed` event is dispatched. For debugging purposes you may listen to this event in the `boot` method of `EventServiceProvider.php`.
 
 ```php
@@ -143,10 +146,10 @@ Event::listen(function (\Illuminate\Notifications\Events\NotificationFailed $eve
 });
 ```
 
-## Laravel Vapor
-By default [Laravel Vapor](https://vapor.laravel.com/) creates a role `laravel-vapor-role` in AWS which does not have permission to send SMS via SNS. This results in SMS being sent successfully in local but will not be sent on a Vapor environment. Note that no exception will be thrown as described above.
+### Lack of Permissions on AWS
+By default [Laravel Vapor](https://vapor.laravel.com/) creates the role `laravel-vapor-role` in AWS, which does not have permissions to send SMS via SNS. This results in SMS being sent successfully in local environments but will not be sent on a Vapor environment. Your messages might also not be sent if you are using an ID/Secret pair for a particular IAM user that can't interact with SNS.
 
-In the AWS console, navigate to Identity and Access Management (IAM) and click on roles. Select `laravel-vapor-role` then add the `AmazonSNSFullAccess` policy to enable sending in Vapor.
+In either case, you need to make sure the credentials you are using (either your role or user) are allowed to interact with the AWS services your application needs. On IAM (Identity and Access Management), you may attach the AWS Managed policy `AmazonSNSFullAccess` or a more granular custom policy to the role/user your application is using.
 
 ## Changelog
 
