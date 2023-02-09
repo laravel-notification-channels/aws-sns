@@ -19,7 +19,7 @@
         "illuminate/support": "^9.0|^10.0"
     },
     "require-dev": {
-        "mockery/mockery": "^1.4.1",
+        "mockery/mockery": "^1.5.1",
         "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
