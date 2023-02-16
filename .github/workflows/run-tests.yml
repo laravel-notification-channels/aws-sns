@@ -13,33 +13,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest ]
-        php: [ 8.1, 8.0, 7.4, 7.3, 7.2 ]
-        laravel: [ 9.*, 8.*, 7.*, 6.*, ~5.5 , 10.*]
+        php: [ 8.1, 8.2 ]
+        laravel: [ 9.*, 10.*]
         dependency-version: [ prefer-lowest, prefer-stable ]
-        exclude:
-          # Laravel 9 Supports PHP 8.0 - 8.1
-          - laravel: 9.*
-            php: 7.4
-          - laravel: 9.*
-            php: 7.3
-          - laravel: 9.*
-            php: 7.2
-          # Laravel 8 Supports PHP 7.3 - 8.1
-          - laravel: 8.*
-            php: 7.2
-          # Laravel 7 Supports PHP 7.2 - 8.0
-          - laravel: 7.*
-            php: 8.1
-          # Laravel 6 Supports PHP 7.2 - 8.0
-          - laravel: 6.*
-            php: 8.1
-          # Laravel 5.5 Supports PHP 7.0 - 7.3
-          - laravel: ~5.5
-            php: 8.1
-          - laravel: ~5.5
-            php: 8.0
-          - laravel: ~5.5
-            php: 7.4
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
