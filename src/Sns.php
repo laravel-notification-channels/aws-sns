@@ -2,28 +2,25 @@
 
 namespace NotificationChannels\AwsSns;
 
-use Aws\Exception\AwsException;
-use Aws\Sns\SnsClient as SnsService;
+use Aws\Result;
+use Aws\Sns\SnsClient;
 
 class Sns
 {
     /**
-     * @var SnsService
+     * Create a new instance of the class.
      */
-    protected $snsService;
-
-    public function __construct(SnsService $snsService)
+    public function __construct(protected SnsClient $sns)
     {
-        $this->snsService = $snsService;
+        //
     }
 
     /**
-     * @param  string  $destination  Phone number as described by the E.164 format.
-     * @return \Aws\Result
+     * Send the message to the given E.164 destination phone number.
      *
-     * @throws AwsException
+     * @throws Aws\Exception\AwsException
      */
-    public function send(SnsMessage $message, $destination)
+    public function send(SnsMessage $message, string $destination): Result
     {
         $attributes = [
             'AWS.SNS.SMS.SMSType' => [
@@ -56,6 +53,6 @@ class Sns
             'MessageAttributes' => $attributes,
         ];
 
-        return $this->snsService->publish($parameters);
+        return $this->sns->publish($parameters);
     }
 }

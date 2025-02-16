@@ -10,12 +10,9 @@ use Mockery;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsMessage;
-use PHPUnit\Framework\TestCase;
 
 class SnsChannelTest extends TestCase
 {
-    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     /**
      * @var Mockery\LegacyMockInterface|Mockery\MockInterface|Sns
      */
@@ -40,14 +37,14 @@ class SnsChannelTest extends TestCase
         $this->channel = new SnsChannel($this->sns, $this->dispatcher);
     }
 
-    /** @test */
-    public function it_will_not_send_a_message_without_known_receiver()
+    public function test_it_will_not_send_a_message_without_known_receiver()
     {
-        $notifiable = new Notifiable();
+        $notifiable = new Notifiable;
         $notification = Mockery::mock(Notification::class);
 
         $this->dispatcher->shouldReceive('dispatch')
-            ->atLeast()->once()
+            ->atLeast()
+            ->once()
             ->with(Mockery::type(NotificationFailed::class));
 
         $result = $this->channel->send($notifiable, $notification);
@@ -55,10 +52,9 @@ class SnsChannelTest extends TestCase
         $this->assertNull($result);
     }
 
-    /** @test */
-    public function it_will_send_a_sms_message_to_the_result_of_the_route_method_of_the_notifiable()
+    public function test_it_will_send_a_sms_message_to_the_result_of_the_route_method_of_the_notifiable()
     {
-        $notifiable = new NotifiableWithMethod();
+        $notifiable = new NotifiableWithMethod;
         $message = new SnsMessage('Message text');
 
         $notification = Mockery::mock(Notification::class);
@@ -71,10 +67,9 @@ class SnsChannelTest extends TestCase
         $this->channel->send($notifiable, $notification);
     }
 
-    /** @test */
-    public function it_will_make_a_call_to_the_phone_number_attribute_of_the_notifiable()
+    public function test_it_will_make_a_call_to_the_phone_number_attribute_of_the_notifiable()
     {
-        $notifiable = new NotifiableWithAttribute();
+        $notifiable = new NotifiableWithAttribute;
         $message = new SnsMessage('Some content to send');
 
         $notification = Mockery::mock(Notification::class);
@@ -87,10 +82,9 @@ class SnsChannelTest extends TestCase
         $this->channel->send($notifiable, $notification);
     }
 
-    /** @test */
-    public function it_will_convert_a_string_to_a_sms_message()
+    public function test_it_will_convert_a_string_to_a_sms_message()
     {
-        $notifiable = new NotifiableWithAttribute();
+        $notifiable = new NotifiableWithAttribute;
 
         $notification = Mockery::mock(Notification::class);
         $notification->shouldReceive('toSns')->andReturn('Message text');
@@ -102,10 +96,9 @@ class SnsChannelTest extends TestCase
         $this->channel->send($notifiable, $notification);
     }
 
-    /** @test */
-    public function it_will_dispatch_an_event_in_case_of_an_invalid_message()
+    public function test_it_will_dispatch_an_event_in_case_of_an_invalid_message()
     {
-        $notifiable = new NotifiableWithAttribute();
+        $notifiable = new NotifiableWithAttribute;
 
         $notification = Mockery::mock(Notification::class);
         $notification->shouldReceive('toSns')->andReturn(-1);
@@ -117,8 +110,7 @@ class SnsChannelTest extends TestCase
         $this->channel->send($notifiable, $notification);
     }
 
-    /** @test */
-    public function it_will_send_a_sms_to_an_anonymous_notifiable()
+    public function test_it_will_send_a_sms_to_an_anonymous_notifiable()
     {
         $notification = Mockery::mock(Notification::class);
         $notification->shouldReceive('toSns')->andReturn('Message text');
@@ -138,9 +130,7 @@ class Notifiable
 {
     public $phone_number;
 
-    public function routeNotificationFor()
-    {
-    }
+    public function routeNotificationFor() {}
 }
 
 class NotifiableWithMethod
@@ -155,7 +145,5 @@ class NotifiableWithAttribute
 {
     public $phone_number = '+22222222222';
 
-    public function routeNotificationFor()
-    {
-    }
+    public function routeNotificationFor() {}
 }

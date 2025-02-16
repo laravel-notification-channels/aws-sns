@@ -2,17 +2,15 @@
 
 namespace NotificationChannels\AwsSns\Test;
 
+use Aws\Result;
 use Aws\Sns\SnsClient as SnsService;
 use Illuminate\Contracts\Events\Dispatcher;
 use Mockery;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsMessage;
-use PHPUnit\Framework\TestCase;
 
 class SnsTest extends TestCase
 {
-    use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-
     /**
      * @var Mockery\LegacyMockInterface|Mockery\MockInterface|SnsService
      */
@@ -38,13 +36,13 @@ class SnsTest extends TestCase
         $this->sns = new Sns($this->snsService);
     }
 
-    /** @test */
-    public function it_can_send_a_promotional_sms_message_to_sns()
+    public function test_it_can_send_a_promotional_sms_message_to_sns()
     {
         $message = new SnsMessage('Message text');
 
         $this->snsService->shouldReceive('publish')
-            ->atLeast()->once()
+            ->atLeast()
+            ->once()
             ->with([
                 'Message' => 'Message text',
                 'PhoneNumber' => '+1111111111',
@@ -55,18 +53,18 @@ class SnsTest extends TestCase
                     ],
                 ],
             ])
-            ->andReturn(true);
+            ->andReturn(new Result);
 
         $this->sns->send($message, '+1111111111');
     }
 
-    /** @test */
-    public function it_can_send_a_transactional_sms_message_to_sns()
+    public function test_it_can_send_a_transactional_sms_message_to_sns()
     {
         $message = new SnsMessage(['body' => 'Message text', 'transactional' => true]);
 
         $this->snsService->shouldReceive('publish')
-            ->atLeast()->once()
+            ->atLeast()
+            ->once()
             ->with([
                 'Message' => 'Message text',
                 'PhoneNumber' => '+22222222222',
@@ -77,18 +75,18 @@ class SnsTest extends TestCase
                     ],
                 ],
             ])
-            ->andReturn(true);
+            ->andReturn(new Result);
 
         $this->sns->send($message, '+22222222222');
     }
 
-    /** @test */
-    public function it_can_send_a_sms_message_with_sender_id()
+    public function test_it_can_send_a_sms_message_with_sender_id()
     {
         $message = new SnsMessage(['body' => 'Message text', 'sender' => 'CompanyInc']);
 
         $this->snsService->shouldReceive('publish')
-            ->atLeast()->once()
+            ->atLeast()
+            ->once()
             ->with([
                 'Message' => 'Message text',
                 'PhoneNumber' => '+33333333333',
@@ -103,7 +101,7 @@ class SnsTest extends TestCase
                     ],
                 ],
             ])
-            ->andReturn(true);
+            ->andReturn(new Result);
 
         $this->sns->send($message, '+33333333333');
     }

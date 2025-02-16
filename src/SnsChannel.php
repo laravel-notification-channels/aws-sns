@@ -2,6 +2,8 @@
 
 namespace NotificationChannels\AwsSns;
 
+use Aws\Result;
+use Exception;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Notification;
@@ -9,42 +11,30 @@ use NotificationChannels\AwsSns\Exceptions\CouldNotSendNotification;
 
 class SnsChannel
 {
-    /**
-     * @var Sns
-     */
-    protected $sns;
-
-    /**
-     * @var Dispatcher
-     */
-    protected $events;
-
-    public function __construct(Sns $sns, Dispatcher $events)
+    public function __construct(protected Sns $sns, protected Dispatcher $events)
     {
-        $this->sns = $sns;
-        $this->events = $events;
+        //
     }
 
     /**
      * Send the given notification.
-     *
-     * @return \Aws\Result
      */
-    public function send($notifiable, Notification $notification)
+    public function send($notifiable, Notification $notification): ?Result
     {
         try {
             $destination = $this->getDestination($notifiable, $notification);
             $message = $this->getMessage($notifiable, $notification);
 
             return $this->sns->send($message, $destination);
-        } catch (\Exception $e) {
-            $event = new NotificationFailed(
+        } catch (Exception $e) {
+            $this->events->dispatch(new NotificationFailed(
                 $notifiable,
                 $notification,
                 'sns',
                 ['message' => $e->getMessage(), 'exception' => $e]
-            );
-            $this->events->dispatch($event);
+            ));
+
+            return null;
         }
     }
 
