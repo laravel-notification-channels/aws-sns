@@ -13,11 +13,9 @@ class SnsServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->when(SnsChannel::class)
-            ->needs(Sns::class)
-            ->give(function () {
-                return new Sns($this->app->make(SnsService::class));
-            });
+        $this->app->bind(Sns::class, function () {
+            return new Sns($this->app->make(SnsService::class));
+        });
 
         $this->app->bind(SnsService::class, function () {
             $config = array_merge(['version' => 'latest'], $this->app['config']['services.sns']);
