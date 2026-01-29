@@ -39,8 +39,6 @@ class SnsChannelTest extends TestCase
         $notification = Mockery::mock(Notification::class);
 
         $result = $this->channel->send($notifiable, $notification);
-
-        $this->assertNull($result);
     }
 
     public function test_it_will_send_a_sms_message_to_the_result_of_the_route_method_of_the_notifiable()

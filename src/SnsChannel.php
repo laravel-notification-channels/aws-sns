@@ -20,7 +20,7 @@ class SnsChannel
     /**
      * Send the given notification.
      */
-    public function send($notifiable, Notification $notification): ?Result
+    public function send($notifiable, Notification $notification): Result
     {
         $destination = $this->getDestination($notifiable, $notification);
         $message = $this->getMessage($notifiable, $notification);
@@ -62,7 +62,7 @@ class SnsChannel
     /**
      * Get the SNS Message object.
      *
-     * @throws \NotificationChannels\AwsSns\Exceptions\InvalidMessage
+     * @throws \NotificationChannels\AwsSns\Exceptions\InvalidMessageException
      */
     protected function getMessage($notifiable, Notification $notification): SnsMessage
     {
