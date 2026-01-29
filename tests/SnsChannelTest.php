@@ -2,11 +2,11 @@
 
 namespace NotificationChannels\AwsSns\Test;
 
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Notifications\Events\NotificationFailed;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 use Mockery;
+use NotificationChannels\AwsSns\Exceptions\InvalidMessageException;
+use NotificationChannels\AwsSns\Exceptions\InvalidReceiverException;
 use NotificationChannels\AwsSns\Sns;
 use NotificationChannels\AwsSns\SnsChannel;
 use NotificationChannels\AwsSns\SnsMessage;
@@ -19,11 +19,6 @@ class SnsChannelTest extends TestCase
     protected $sns;
 
     /**
-     * @var Dispatcher|Mockery\LegacyMockInterface|Mockery\MockInterface
-     */
-    protected $dispatcher;
-
-    /**
      * @var SnsChannel
      */
     protected $channel;
@@ -33,19 +28,15 @@ class SnsChannelTest extends TestCase
         parent::setUp();
 
         $this->sns = Mockery::mock(Sns::class);
-        $this->dispatcher = Mockery::mock(Dispatcher::class);
-        $this->channel = new SnsChannel($this->sns, $this->dispatcher);
+        $this->channel = new SnsChannel($this->sns);
     }
 
     public function test_it_will_not_send_a_message_without_known_receiver()
     {
+        $this->expectException(InvalidReceiverException::class);
+
         $notifiable = new Notifiable;
         $notification = Mockery::mock(Notification::class);
-
-        $this->dispatcher->shouldReceive('dispatch')
-            ->atLeast()
-            ->once()
-            ->with(Mockery::type(NotificationFailed::class));
 
         $result = $this->channel->send($notifiable, $notification);
 
@@ -96,16 +87,14 @@ class SnsChannelTest extends TestCase
         $this->channel->send($notifiable, $notification);
     }
 
-    public function test_it_will_dispatch_an_event_in_case_of_an_invalid_message()
+    public function test_it_will_throw_in_case_of_an_invalid_message()
     {
+        $this->expectException(InvalidMessageException::class);
+
         $notifiable = new NotifiableWithAttribute;
 
         $notification = Mockery::mock(Notification::class);
         $notification->shouldReceive('toSns')->andReturn(-1);
-
-        $this->dispatcher->shouldReceive('dispatch')
-            ->atLeast()->once()
-            ->with(Mockery::type(NotificationFailed::class));
 
         $this->channel->send($notifiable, $notification);
     }
