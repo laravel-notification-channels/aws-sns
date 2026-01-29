@@ -114,7 +114,9 @@ class SnsMessage
      */
     public function getDeliveryType()
     {
-        return $this->promotional ? self::PROMOTIONAL_SMS_TYPE : self::TRANSACTIONAL_SMS_TYPE;
+        return $this->promotional
+            ? self::PROMOTIONAL_SMS_TYPE
+            : self::TRANSACTIONAL_SMS_TYPE;
     }
 
     /**
