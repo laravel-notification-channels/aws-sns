@@ -30,7 +30,7 @@ class SnsChannel
             $this->events->dispatch(new NotificationFailed(
                 $notifiable,
                 $notification,
-                'sns',
+                SnsChannel::class,
                 ['message' => $e->getMessage(), 'exception' => $e]
             ));
 
